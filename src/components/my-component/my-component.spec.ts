@@ -1,36 +1,16 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { MyComponent } from './my-component';
+import { screen } from '@testing-library/dom';
 
-describe('my-component', () => {
-  it('renders', async () => {
-    const { root } = await newSpecPage({
-      components: [MyComponent],
-      html: '<my-component></my-component>',
-    });
-    expect(root).toEqualHtml(`
-      <my-component>
-        <mock:shadow-root>
-          <div>
-            Hello, World! I'm
-          </div>
-        </mock:shadow-root>
-      </my-component>
-    `);
-  });
+import '@testing-library/jest-dom';
+import { TestComponent } from './my-component';
 
-  it('renders with values', async () => {
-    const { root } = await newSpecPage({
-      components: [MyComponent],
-      html: `<my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>`,
+describe('test component', () => {
+  it('can find button using getByRole', async () => {
+    await newSpecPage({
+      components: [TestComponent],
+      html: `<test-component/>`,
     });
-    expect(root).toEqualHtml(`
-      <my-component first="Stencil" last="'Don't call me a framework' JS">
-        <mock:shadow-root>
-          <div>
-            Hello, World! I'm Stencil 'Don't call me a framework' JS
-          </div>
-        </mock:shadow-root>
-      </my-component>
-    `);
+    const button = screen.getByRole('button');
+    expect(button).toEqualHtml('<button>test</button>');
   });
 });
